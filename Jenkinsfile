@@ -19,6 +19,8 @@ pipeline {
       PROJECT_ROOT = 'app/'
       EMAIL_ADDRESS = 'san99tiagodevsecops@gmail.com'
       REGISTRY = 'bambino29/docker-node-demo'
+      DOCKER_USER=jquiroz29
+      DOCKER_PASSWORD=Q1w2e3r4.
   }
 
   stages {
@@ -50,7 +52,7 @@ pipeline {
       stage('Deploy docker-image') {
         steps {
           // If the Dockerhub authentication stopped, do it again
-          sh 'docker login'
+          sh 'docker login -u ${DOCKER_USER} -p ${DOCKER_PASSWORD}'
           sh "docker push ${REGISTRY}:${BUILD_NUMBER}"
         }
       }
