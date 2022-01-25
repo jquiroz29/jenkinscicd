@@ -56,7 +56,8 @@ pipeline {
           sh 'docker login -u ${DOCKER_USER} -p ${DOCKER_PASSWORD}'
           sh "docker push ${REGISTRY}:${BUILD_NUMBER}"
           sh "docker pull ${REGISTRY}:${BUILD_NUMBER}"
-          sh "docker run -p 3000:3000 -d --name my-nodejs-app bambino29/docker-node-demo:${BUILD_NUMBER}"
+          sh "docker run -p 3000:3000 -d --name my-nodejs-app ${REGISTRY}:${BUILD_NUMBER}"
+          sh "docker start ${REGISTRY}:${BUILD_NUMBER}"
         }
       }
   }
