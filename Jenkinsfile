@@ -50,6 +50,7 @@ pipeline {
       stage('Deploy docker-image') {
         steps {
           // If the Dockerhub authentication stopped, do it again
+          sh 'docker login'
           sh "docker push ${REGISTRY}:${BUILD_NUMBER}"
         }
       }
