@@ -1,23 +1,58 @@
+// Function to validate that the message returned from SonarQube is ok
+def qualityGateValidation(qg) {
+  if (qg.status != 'OK') {
+    // emailext body: "WARNING SANTI: Code coverage is lower than 80% in Pipeline ${BUILD_NUMBER}", subject: 'Error Sonar Scan,   Quality Gate', to: "${EMAIL_ADDRESS}"
+    return true
+  }
+  // emailext body: "CONGRATS SANTI: Code coverage is higher than 80%  in Pipeline ${BUILD_NUMBER} - SUCCESS", subject: 'Info - Correct Pipeline', to: "${EMAIL_ADDRESS}"
+  return false
+}
 pipeline {
   agent any
+
+  tools {
+      nodejs 'nodejs'
+  }
+
+  environment {
+      // General Variables for Pipeline
+      PROJECT_ROOT = 'app/'
+      EMAIL_ADDRESS = 'san99tiagodevsecops@gmail.com'
+      REGISTRY = 'bambino29/docker-node-demo'
+  }
+
   stages {
-    stage('build') {
-      steps {
-        echo 'Build message'
+      stage('Hello') {
+        steps {
+          // First stage is a sample hello-world step to verify correct Jenkins Pipeline
+          echo 'Hello World, I am Happy'
+          echo 'This is my amazing Pipeline'
+        }
       }
-    }
-
-    stage('test') {
-      steps {
-        echo 'Test Message'
+      stage('Checkout') {
+        steps {
+        // Get Github repo using Github credentials (previously added to Jenkins credentials)
+         checkout([$class: 'GitSCM', branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/jquiroz29/demo']]]) 
+        }
       }
-    }
-
-    stage('deploy') {
-      steps {
-        echo 'deploy message'
+      stage('Install dependencies') {
+        steps {
+          sh 'npm --version'
+          sh "cd ${PROJECT_ROOT}; npm install"
+        }
       }
-    }
 
+      stage('Build docker-image') {
+        steps {
+          sh "cd ./${PROJECT_ROOT};docker build -t ${REGISTRY}:${BUILD_NUMBER} . "
+        }
+      }
+      stage('Deploy docker-image') {
+        steps {
+          // If the Dockerhub authentication stopped, do it again
+          sh 'docker login'
+          sh "docker push ${REGISTRY}:${BUILD_NUMBER}"
+        }
+      }
   }
 }
