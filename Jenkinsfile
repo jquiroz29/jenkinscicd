@@ -52,8 +52,10 @@ pipeline {
       stage('Deploy docker-image') {
         steps {
           // If the Dockerhub authentication stopped, do it again
+          sh 'docker rmi $(docker images | grep ${REGISTRY})'
           sh 'docker login -u ${DOCKER_USER} -p ${DOCKER_PASSWORD}'
           sh "docker push ${REGISTRY}:${BUILD_NUMBER}"
+          sh "docker pull ${REGISTRY}:${BUILD_NUMBER}"
         }
       }
   }
