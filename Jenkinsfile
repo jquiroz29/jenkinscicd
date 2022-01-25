@@ -19,8 +19,8 @@ pipeline {
       PROJECT_ROOT = 'app/'
       EMAIL_ADDRESS = 'san99tiagodevsecops@gmail.com'
       REGISTRY = 'bambino29/docker-node-demo'
-      DOCKER_USER=jquiroz29
-      DOCKER_PASSWORD=Q1w2e3r4.
+      DOCKER_USER='jquiroz29'
+      DOCKER_PASSWORD='Q1w2e3r4.'
   }
 
   stages {
