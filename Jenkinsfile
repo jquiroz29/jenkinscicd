@@ -53,14 +53,17 @@ pipeline {
         steps {
           // If the Dockerhub authentication stopped, do it again
           sh "docker stop my-nodejs-app"
-          sh 'docker rmi -f $(docker images | grep ${REGISTRY})'
           sh 'docker login -u ${DOCKER_USER} -p ${DOCKER_PASSWORD}'
-          sh "docker push ${REGISTRY}:${BUILD_NUMBER}"
-          sh "docker pull ${REGISTRY}:${BUILD_NUMBER}"
-          sh "docker rm my-nodejs-app"
+          sh "docker push ${REGISTRY}:${BUILD_NUMBER}"    
           sh "docker run -p 3000:3000 -d --name my-nodejs-app ${REGISTRY}:${BUILD_NUMBER}"
           sh "docker start my-nodejs-app"
         }
       }
+      stage('Deploy docker-image') {
+        steps {
+          sh "docker rmi ${REGISTRY}:${BUILD_NUMBER}"
+          sh "docker rm my-nodejs-app"
+        }
+      }  
   }
 }
