@@ -62,7 +62,7 @@ pipeline {
       }
       stage('Cleaning up') {
         steps {
-          sh "docker rmi ${REGISTRY}:${BUILD_NUMBER}"
+          sh "docker rmi -f ${REGISTRY}:${BUILD_NUMBER}"
         }
       }  
   }
