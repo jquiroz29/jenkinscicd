@@ -47,7 +47,7 @@ pipeline {
         steps {
           sh "docker stop my-nodejs-app"
           sh "docker rm my-nodejs-app"
-          sh "docker image rm $(docker image ls --format '{{.Repository}}:{{.Tag}}' | grep '^${REGISTRY}') -f"
+          sh "docker image rm "$(docker image ls --format '{{.Repository}}:{{.Tag}}' | grep '^${REGISTRY}')" -f"
           sh "cd ./${PROJECT_ROOT};docker build -t ${REGISTRY}:${BUILD_NUMBER} . "
         }
       }
