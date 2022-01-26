@@ -59,7 +59,7 @@ pipeline {
           sh "docker start my-nodejs-app"
         }
       }
-      stage('Deploy docker-image') {
+      stage('Cleaning up') {
         steps {
           sh "docker rmi ${REGISTRY}:${BUILD_NUMBER}"
           sh "docker rm my-nodejs-app"
