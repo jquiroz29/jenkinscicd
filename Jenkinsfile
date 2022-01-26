@@ -46,23 +46,24 @@ pipeline {
 
       stage('Build docker-image') {
         steps {
+          sh "docker stop my-nodejs-app"
+          sh "docker rm my-nodejs-app"
+          sh "docker rmi -f ${REGISTRY}"
           sh "cd ./${PROJECT_ROOT};docker build -t ${REGISTRY}:${BUILD_NUMBER} . "
         }
       }
       stage('Deploy docker-image') {
         steps {
           // If the Dockerhub authentication stopped, do it again
-          sh "docker stop my-nodejs-app"
-          sh "docker rm my-nodejs-app"
           sh 'docker login -u ${DOCKER_USER} -p ${DOCKER_PASSWORD}'
-          sh "docker push ${REGISTRY}:${BUILD_NUMBER}"    
           sh "docker run -p 3000:3000 -d --name my-nodejs-app ${REGISTRY}:${BUILD_NUMBER}"
           sh "docker start my-nodejs-app"
+          sh "docker push ${REGISTRY}:${BUILD_NUMBER}"  
         }
       }
       stage('Cleaning up') {
         steps {
-          sh "docker rmi -f ${REGISTRY}:${BUILD_NUMBER}"
+
         }
       }  
   }
