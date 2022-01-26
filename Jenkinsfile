@@ -43,7 +43,6 @@ pipeline {
           sh "cd ${PROJECT_ROOT}; npm install"
         }
       }
-
       stage('Build docker-image') {
         steps {
           sh "docker stop my-nodejs-app"
@@ -61,10 +60,5 @@ pipeline {
           sh "docker push ${REGISTRY}:${BUILD_NUMBER}"  
         }
       }
-      stage('Cleaning up') {
-        steps {
-
-        }
-      }  
   }
 }
