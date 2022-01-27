@@ -24,13 +24,6 @@ pipeline {
   }
 
   stages {
-      stage('Hello') {
-        steps {
-          // First stage is a sample hello-world step to verify correct Jenkins Pipeline
-          echo 'Hello World, I am Happy'
-          echo 'This is my amazing Pipeline'
-        }
-      }
       stage('Checkout') {
         steps {
         // Get Github repo using Github credentials (previously added to Jenkins credentials)
@@ -47,7 +40,7 @@ pipeline {
         steps {
           sh "docker stop my-nodejs-app"
           sh "docker rm my-nodejs-app"
-          sh "docker image rm $(docker image ls --format '{{.Repository}}:{{.Tag}}' | grep '^${REGISTRY}') -f"
+          sh "docker image rm $(docker image ls --format '{{.Repository}}:{{.Tag}}' | grep '^bambino29/docker-node-demo') -f"
           sh "cd ./${PROJECT_ROOT};docker build -t ${REGISTRY}:${BUILD_NUMBER} . "
         }
       }
