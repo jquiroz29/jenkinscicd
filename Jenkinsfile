@@ -39,7 +39,7 @@ pipeline {
       stage('Build docker-image') {
         steps {
           
-          listImage = sh "docker stop my-nodejs-app"
+          def listImage = sh "docker stop my-nodejs-app"
           if(listImage){
             sh "docker rm my-nodejs-app"
             sh "docker image rm  ${REGISTRY}:latest"
