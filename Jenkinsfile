@@ -40,7 +40,7 @@ pipeline {
         steps {
           sh "docker stop my-nodejs-app"
           sh "docker rm my-nodejs-app"
-          sh "docker image rm $(docker image ls --format '{{.Repository}}:{{.Tag}}' | grep '^bambino29/docker-node-demo') -f"
+          sh "docker image rm  ${REGISTRY}:latest"
           sh "cd ./${PROJECT_ROOT};docker build -t ${REGISTRY}:${BUILD_NUMBER} . "
         }
       }
