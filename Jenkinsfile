@@ -38,8 +38,9 @@ pipeline {
       }
       stage('Build docker-image') {
         steps {
-          def listImage = "docker images | grep jenkins-docker".execute()
-          println listImage.text
+          command = "docker images | grep jenkins-docker".execute()"
+          listImage = command.execute()
+          println "Std Out: ${listImage.in.text}" 
           if(listImage){
             sh "docker stop my-nodejs-app"
             sh "docker rm my-nodejs-app"
