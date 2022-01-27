@@ -38,9 +38,10 @@ pipeline {
       }
       stage('Build docker-image') {
         steps {
-          
-          def listImage = sh "docker stop my-nodejs-app"
+          def listImage = "docker images | grep jenkins-docker".execute()
+          println listImage.text
           if(listImage){
+            sh "docker stop my-nodejs-app"
             sh "docker rm my-nodejs-app"
             sh "docker image rm  ${REGISTRY}:latest"
           }else{
