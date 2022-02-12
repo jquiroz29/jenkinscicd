@@ -17,7 +17,7 @@ pipeline {
   environment {
       // General Variables for Pipeline
       PROJECT_ROOT = 'app/'
-      EMAIL_ADDRESS = 'san99tiagodevsecops@gmail.com'
+      EMAIL_ADDRESS = '###'
       REGISTRY = 'bambino29/docker-node-demo'
       DOCKER_USER='bambino29'
       DOCKER_PASSWORD='Q1w2e3r4.'
